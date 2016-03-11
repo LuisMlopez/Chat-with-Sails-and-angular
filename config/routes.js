@@ -37,9 +37,6 @@ module.exports.routes = {
   // }
     'get /user/find/:username': 'UserController.searchUser',
     'post /user/createUser': 'UserController.newUser',
-    'get /chat/index' : {
-      view : 'chat'
-    },
     'post /user/delteUser': 'UserController.deleteUser',
     'post /loginP': {
       controller: 'AuthController',
@@ -51,6 +48,9 @@ module.exports.routes = {
     '/logout': {
       controller: 'AuthController',
       action: 'logout'
+    },
+    'get /chat' : {
+      view : 'chat/chat'
     }
 
   /***************************************************************************

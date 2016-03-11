@@ -38,7 +38,7 @@ module.exports = {
 				//login user
 				req.login(user, function (err) {
 					if (err) { return res.negotiate(err); }
-					return res.json({user: req.user});
+					return res.redirect('/chat');//res.json({user: req.user});
 				});
 			});
 	},

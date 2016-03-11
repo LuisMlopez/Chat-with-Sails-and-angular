@@ -14,7 +14,7 @@ module.exports = {
 
 	    req.logIn(user, function (err) {
 				if (err) { return res.negotiate(err); }
-				return res.json({user: user});
+				return res.redirect('/chat');//res.json({user: user});
 	    });
 		})(req, res);
   },
