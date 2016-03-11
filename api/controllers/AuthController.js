@@ -7,18 +7,16 @@
 var passport = require('passport');
 
 module.exports = {
-	login: function (req, res, next) {
-		//********el usuario autenticado lo va a guardar siempre passport en req.user****
-  	debugger;
+	login: function (req, res) {
     passport.authenticate('local', function(err, user, info) {
-      if (err) { return next(err); }
-   		if (!user) { return res.redirect('/login'); }
+	    if (err) { return res.negotiate(err); }
+			if (!user) { return res.redirect('/login'); }//res.redirect('/login'); }
 
-      req.logIn(user, function (err) {
-        if (err) { return next(err); }
-        return res.json({user: user});
-      });
-    })(req, res, next);
+	    req.logIn(user, function (err) {
+				if (err) { return res.negotiate(err); }
+				return res.json({user: user});
+	    });
+		})(req, res);
   },
   logout: function (req,res){
     req.logout();

@@ -3,7 +3,7 @@ $('button#loginButton').on('click', function (event) {
 	$(location).attr('href', url);
 });
 
-$('button#signinButton').on('click', function (event) {
+$('button#signupButton').on('click', function (event) {
 	$('section#chooseSection').hide();
 	$('section#signinSection').show();
 });

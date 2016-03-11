@@ -4,7 +4,10 @@ var passport = require('passport'),
 
 //helper functions
 function findById(id, fn) {
-  User.findOne(id).exec(function (err, user) {
+  // debugger;
+  User.findOne({
+    id : id
+  }).exec(function (err, user) {
     if (err) {
       return fn(err, null);
     } else {
@@ -33,11 +36,13 @@ function findByUsername(u, fn) {
 // this will be as simple as storing the user ID when serializing, and finding
 // the user by ID when deserializing.
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+  // debugger;
+  done(null, user.username);
 });
  
-passport.deserializeUser(function (id, done) {
-  findById(id, function (err, user) {
+passport.deserializeUser(function (username, done) {
+  // debugger;
+  findByUsername(username, function (err, user) {
     done(err, user);
   });
 });
@@ -48,6 +53,7 @@ passport.deserializeUser(function (id, done) {
 // with a user object.
 passport.use(new LocalStrategy(
   function (username, password, done) {
+    // debugger;
     // asynchronous verification, for effect...
     // process.nextTick(function () {//nextTick: asynchronous
 
@@ -57,13 +63,12 @@ passport.use(new LocalStrategy(
       // indicate failure and set a flash message. Otherwise, return the
       // authenticated `user`.
     findByUsername(username, function (err, user) {
-      debugger;
       if (err) { return done(null, err); }
       if (!user) {
         return done(null, false, { message: 'Unknown user ' + username });
       }
       bcrypt.compare(password, user.password, function (err, res) {
-        debugger;
+
         if (!res)
           return done(null, false, { message: 'Invalid Password' });
 

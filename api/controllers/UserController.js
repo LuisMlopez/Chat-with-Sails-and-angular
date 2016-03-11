@@ -4,7 +4,6 @@
  * @description :: Server-side logic for managing users
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
-// var User = require('../models/User');
 
 module.exports = {
 
@@ -36,8 +35,11 @@ module.exports = {
 		User.create(params)
 			.exec(function (err, user) {
 				if (err) { return res.negotiate(err); }
-				// return res.view('chat.ejs', {user: user});
-				res.json({'user' : user}); //../../assets/templates/chat.html);
+				//login user
+				req.login(user, function (err) {
+					if (err) { return res.negotiate(err); }
+					return res.json({user: req.user});
+				});
 			});
 	},
 	deleteUser: function (req, res) {
