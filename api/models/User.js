@@ -8,12 +8,12 @@ var bcrypt = require('bcrypt');
 
 module.exports = {
 
+  autosubscribe: ['destroy', 'update', 'create'],
   attributes: {
   	username : {
   		type : 'string',
   		unique : true,
-  		required : true,
-      primaryKey: true
+  		required : true
   	},
   	name : {
   		type : 'string'
@@ -24,7 +24,8 @@ module.exports = {
   	},
     chats: {
       collection: 'chat',
-      via: 'owner' 
+      via: 'owners',
+      dominant: true 
     },
     toJson : function() {
       var obj = this.toObject();

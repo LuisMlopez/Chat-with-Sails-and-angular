@@ -1,0 +1,47 @@
+#chat-body {
+  width: 100%;
+  overflow: hidden;
+  padding: 16px;
+  background-color: white;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+#chat-body .img-container {
+  width: 20%;
+}
+
+#chat-body img {
+  max-width: 100%;
+}
+
+#chat-body .chat-window {
+  width: 75%;
+}
+
+#chat-body .chatScreen {
+  position: absolute;
+  top: 60px;
+  bottom: 30px;
+  width: 72%;
+  right: 10px;
+  border-style: solid;
+  overflow: auto;
+}
+
+#chat-body .chat-nick {
+  width: 31%;
+  position: absolute;
+  bottom: 3px;
+}
+
+#chat-body .chat-input {
+  width: 40%;
+  position: absolute;
+  bottom: 3px;
+  left: 200px;
+}
+
+#chat-body p {
+  font-size: 12px;
+}

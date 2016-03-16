@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 	<title>logIn</title>
 </head>
 <body>
-	<form method="POST" action="/loginP">
-		<input type="text" id="username" placeholder="username" name="username"></input>
-		<input type="password" id="password" placeholder="password" name="password"></input>
-		<button type="submit">Submit</button>
+	<form id="loginForm" method="POST" action="#">
+		<input type="text" id="loginUsername" placeholder="username" name="username"></input>
+		<input type="password" id="loginPassword" placeholder="password" name="password"></input>
+		<button type="submit" id="loginSubmit">Submit</button>
 	</form>
+
 	
 </body>
 </html>

@@ -6,10 +6,30 @@
 	<script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
 </head>
 <body>
-	<h1>Chat</h1>
-	<%= req.user.username %>
+	<h1>Welcome <%= req.user.username %></h1>
+	
 
-	<button type="submit">Log Out</button>
+	<section id="usersSection">
+		<div id="usersList">
+			<ul>
+				<li>User1</li>
+				<li>User2</li>
+				<li>User3</li>
+				<li>User4</li>
+				<li>User5</li>
+			</ul>
+		</div>
+	</section>
+	<div>
+	    <select id="users-list" size="5"></select>
+	    <button id="private-msg-button">Send message to user</button>
+	    <div id="chat-body"></div>
+	</div>
+
+	<button id="subs">Subscribe</button>
+	<button id="snd"></button>
+
+	<button type="submit" id="logoutButton">Log Out</button>
 	
 </body>
 </html>

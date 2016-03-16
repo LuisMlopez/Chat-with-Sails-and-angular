@@ -32,26 +32,37 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  // '/': {
-  //   view: 'homepage'
-  // }
-    'get /user/find/:username': 'UserController.searchUser',
-    'post /user/createUser': 'UserController.newUser',
-    'post /user/delteUser': 'UserController.deleteUser',
-    'post /loginP': {
-      controller: 'AuthController',
-      action: 'login'
-    },
-    'get /login' : {
-      view: 'auth/login'
-    },
-    '/logout': {
-      controller: 'AuthController',
-      action: 'logout'
-    },
-    'get /chat' : {
-      view : 'chat/chat'
-    }
+  '/': {
+    view: 'homepage'
+  },
+  'get /user/find/:username': 'UserController.searchUser',
+  'post /user/createUser': {
+    controller : 'UserController',
+    action: 'newUser'
+  },
+  'post /user/delteUser': 'UserController.deleteUser',
+  'post /loginP': {
+    controller: 'AuthController',
+    action: 'login'
+  },
+  'get /login' : {
+    view: 'auth/login'
+  },
+  '/logout': {
+    controller: 'AuthController',
+    action: 'logout'
+  },
+  'get /chatView' : {
+    view : 'chat/chat'
+  },
+  'post /sendMessage' : {
+    controller : 'ChatController',
+    action : 'send'
+  },
+  'get /subscribeToUser' : {
+    controller : 'UserController',
+    action : 'subscribeToUser'
+  }
 
   /***************************************************************************
   *                                                                          *

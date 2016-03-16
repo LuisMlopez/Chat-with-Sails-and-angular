@@ -4,6 +4,7 @@
  * @description :: Server-side logic for managing users
  * @help        :: See http://sailsjs.org/#!/documentation/concepts/Controllers
  */
+var passport = require('passport');
 
 module.exports = {
 
@@ -26,6 +27,7 @@ module.exports = {
 	},
 
 	newUser: function (req, res) {
+
 		var params = {
 			name : req.param('name'),
 			username : req.param('username'),
@@ -36,10 +38,17 @@ module.exports = {
 			.exec(function (err, user) {
 				if (err) { return res.negotiate(err); }
 				//login user
-				req.login(user, function (err) {
-					if (err) { return res.negotiate(err); }
-					return res.redirect('/chat');//res.json({user: req.user});
-				});
+				passport.authenticate('local', function(err, user, info) {
+			    if (err) { return res.negotiate(err); }
+					if (!user) { return res.redirect('/login'); }
+
+					req.logIn(user, function (err) {
+						if (err) { return res.negotiate(err); }
+
+						return res.json({user: req.user});
+					});
+				})(req, res);
+				
 			});
 	},
 	deleteUser: function (req, res) {
@@ -49,7 +58,41 @@ module.exports = {
 				if (err) { return res.negotiate(err); }
 				res.json({res : 'deleted'});
 			});
-	}
+	},
+	subscribeToUser : function (req, res) {
+		if (!req.isSocket) return res.json({message: 'You are not a socket!!'});
+
+		var usernameToSubscribe = req.param('username');
+
+		User.findOne({
+			username: usernameToSubscribe
+		}).exec (function (err, user) {
+			if (err) return res.json({err : 'error creating user.'});
+
+			//req: contain the socket wich is subscribing to another socket.
+			//user.id : the user id which your are going to subscribe. 
+			User.subscribe(req, user.id, 'message');
+			res.json({user: user});
+		});
+	},
+	///////////////////////////////////////////////////////////////////////
+	// test : function (req, res) {
+	// 	User.findOne({
+	// 		username: 'LuisM'
+	// 	}).exec(function (err, user) {
+	// 		User.subscribe(req, user.id, 'message');
+	// 		res.ok({user:user});
+	// 	});
+	// },
+
+	// msgTest : function (req, res) {
+	// 	User.findOne({
+	// 		username: 'LuisM'
+	// 	}).exec(function (err, user) {
+	// 		User.message(user.id, {message:'Funcionaa!!'});
+	// 		res.ok({user:user});
+	// 	});
+	// }
 
 
 	
