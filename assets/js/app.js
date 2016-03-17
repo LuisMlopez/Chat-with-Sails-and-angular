@@ -28,7 +28,7 @@ $(document).ready(function (){
 			});
 		});
 
-		//verify that the username is no already used
+		//verify that the username is no already used.
 		$('#username').on('focusout', function(ev) {
 			var input = this;
 			var username = input.value;
