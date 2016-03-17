@@ -48,7 +48,7 @@ module.exports.routes = {
   'get /login' : {
     view: 'auth/login'
   },
-  '/logout': {
+  'post /logout': {
     controller: 'AuthController',
     action: 'logout'
   },
@@ -60,8 +60,16 @@ module.exports.routes = {
     action : 'send'
   },
   'get /subscribeToUser' : {
-    controller : 'UserController',
+    controller : 'ChatController',
     action : 'subscribeToUser'
+  },
+  'get /publishLogin' : {
+    controller : 'ChatController',
+    action : 'publishLogin'
+  },
+  'get /publishLogout' : {
+    controller: 'ChatController',
+    action : 'publishLogout'
   }
 
   /***************************************************************************

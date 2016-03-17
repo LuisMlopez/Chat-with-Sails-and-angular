@@ -17,8 +17,15 @@ $(document).ready(function (){
 
 		//logout
 		$('button#logoutButton').on('click', function (event) {
-			url = '/logout';
-			$(location).attr('href', url);
+			$.post('logout', {
+				username : window.currentUser.username
+			},
+			function (res) {
+				io.socket.get('/publishLogout', function (res, jwres) {
+					url = '/login';
+					$(location).attr('href', url);
+				});
+			});
 		});
 
 		//verify that the username is no already used
@@ -48,15 +55,13 @@ $(document).ready(function (){
 			
 			$.post('/user/createUser', $( "#userForm" ).serialize(), function (res) {
 				window.currentUser = res.user;
-				// io.socket.get('/subscribeToUser', {
-				// 	username: res.user.username
-				// }, function (res, jwres) {
-				// 	console.log('user ' + res.user.username + ' subscribed');
-				// 	url = '/chatView';
-				// 	$(location).attr('href', url);
-				// });
-				url = '/chatView';
-				$(location).attr('href', url);
+				io.socket.get('/publishLogin', function (res, jwres) {
+					//console.log('user ' + res.user.username + ' login');
+					url = '/chatView';
+					$(location).attr('href', url);
+				});
+				// url = '/chatView';
+				// $(location).attr('href', url);
 			});
 		});
 

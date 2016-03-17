@@ -93,6 +93,14 @@ $(document).ready(function () {
 		}
 	});
 
+	io.socket.on('login', function(data) {
+		io.socket.get('/user', updateUserList);
+	});
+
+	io.socket.on('logout', function(data) {
+		io.socket.get('/user', updateUserList);
+	});
+
 	/////////////////////////////////
 
 	$('button#subs').on('click', function(event) {

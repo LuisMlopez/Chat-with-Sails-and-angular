@@ -45,7 +45,10 @@ module.exports = {
 					req.logIn(user, function (err) {
 						if (err) { return res.negotiate(err); }
 
-						return res.json({user: req.user});
+						User.update({username: user.username}, {online: true}, function () {
+							return res.json({user: req.user});	
+						});
+						
 					});
 				})(req, res);
 				
@@ -59,22 +62,7 @@ module.exports = {
 				res.json({res : 'deleted'});
 			});
 	},
-	subscribeToUser : function (req, res) {
-		if (!req.isSocket) return res.json({message: 'You are not a socket!!'});
-
-		var usernameToSubscribe = req.param('username');
-
-		User.findOne({
-			username: usernameToSubscribe
-		}).exec (function (err, user) {
-			if (err) return res.json({err : 'error creating user.'});
-
-			//req: contain the socket wich is subscribing to another socket.
-			//user.id : the user id which your are going to subscribe. 
-			User.subscribe(req, user.id, 'message');
-			res.json({user: user});
-		});
-	},
+	
 	///////////////////////////////////////////////////////////////////////
 	// test : function (req, res) {
 	// 	User.findOne({

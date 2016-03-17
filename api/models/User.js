@@ -22,6 +22,10 @@ module.exports = {
   		type : 'string',
       required: true
   	},
+    online : {
+      type : 'boolean',
+      default : false
+    },
     chats: {
       collection: 'chat',
       via: 'owners',

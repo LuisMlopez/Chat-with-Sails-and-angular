@@ -4,17 +4,18 @@ $(document).ready(function () {
 		event.preventDefault();
 		
 		$.post('/loginP', $( "#loginForm" ).serialize(), function(res) {
-			window.currentUser = res.user;
-			//Subscribe user
-			// io.socket.get('/subscribeToUser', {
-			// 	username: res.user.username
-			// }, function (res, jwres) {
-			// 	console.log('user ' + res.user.username + ' subscribed');
-			// 	url = '/chatView';
-			// 	$(location).attr('href', url);
-			// });			
-			url = '/chatView';
-			$(location).attr('href', url);
+			var user = res.user;
+			window.currentUser = user;
+			//publish user login
+			io.socket.get('/publishLogin', function (res, jwres) {
+				//console.log('user ' + res.user.username + ' login');
+				if(!user) {url = '/login';}
+				else {url = '/chatView';}
+				$(location).attr('href', url);
+			});	
+			// if(!res.user) {url = '/login';}
+			// else {url = '/chatView';}			
+			// $(location).attr('href', url);
 		});
 	});
 });
