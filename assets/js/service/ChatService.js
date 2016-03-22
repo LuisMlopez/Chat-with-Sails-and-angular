@@ -26,9 +26,24 @@
 			return defer.promise;
 		}
 
+		function logout (username) {
+			var defer = $q.defer();
+			if (username) {
+				$http.post('/logout', username)
+					.success( function () {
+						defer.resolve();
+					});
+			}else{
+				defer.reject();
+			}
+
+			return defer.promise;
+		}
+
 		return {
 			login: login,
-			signup: signup
+			signup: signup,
+			logout: logout
 		}
 		
 	}]);

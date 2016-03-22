@@ -30,7 +30,7 @@
 
 	var loginRequired = function ($q, $rootScope, $location) {
 		var defer = $q.defer();
-		if (!$rootScope.user){
+		if (!$rootScope.currentUser){
 			$location.path('/').replace();
 		}
 		defer.resolve();
@@ -39,12 +39,19 @@
 
 	var sessionOnProgress = function ($q, $rootScope, $location) {
 		var defer = $q.defer();
-		if ($rootScope.user){
+		if ($rootScope.currentUser){
 			$location.path('/chat').replace();
 		}
 		defer.resolve();
 		return defer.promise;
 	}
 
+	chatApp.run(['$rootScope', 'SessionService', function ($rootScope, SessionService) {
+		Object.defineProperty($rootScope, 'currentUser', {
+			get : function () {
+				return SessionService.getCurrentUser();
+			}
+		});
+	}]);
 	
 })();
