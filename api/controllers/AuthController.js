@@ -8,7 +8,7 @@ var passport = require('passport');
 
 module.exports = {
 	login: function (req, res) {
-		
+		//debugger;
 		var socketId = sails.sockets.getId(req);
     var session = req.session;
     session.users = session.users || {};

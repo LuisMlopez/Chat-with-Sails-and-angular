@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="chatApp">
   <head>
-    <title><%=typeof title == 'undefined' ? 'New Sails App' : title%></title>
+    <title><%=typeof title == 'undefined' ? 'Sails Chat' : title%></title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -29,6 +29,7 @@
     -->
 
     <!--STYLES-->
+    <link rel="stylesheet" href="/styles/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/chat.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <link rel="stylesheet" href="/styles/index.css">
@@ -36,7 +37,8 @@
   </head>
 
   <body>
-    <%- body %>
+    <div ng-view></div>
+    
 
 
 
@@ -91,10 +93,19 @@
 
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="/js/app-old.js"></script>
     <script src="/js/app.js"></script>
     <script src="/js/basics.js"></script>
     <script src="/js/chat.js"></script>
+    <script src="/js/controllers/loginController.js"></script>
+    <script src="/js/controllers/signupController.js"></script>
+    <script src="/js/directives/directives.js"></script>
     <script src="/js/login.js"></script>
+    <script src="/js/service/ChatService.js"></script>
     <script src="/js/user.js"></script>
     <!--SCRIPTS END-->
   </body>
