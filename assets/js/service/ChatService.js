@@ -3,47 +3,49 @@
 
 	.factory('ChatService', ['$http', '$q', function($http, $q) {
 		
-		function login (user) {
+		function getUsers() {			
 			var defer = $q.defer();
 
-			$http.post('/loginP', user)
-				.success(function (res) {
-					defer.resolve(res.user);
-				}).error(function (err){
-					defer.reject(err);
-				});
+			io.socket.get('/users', function (users) {
+				defer.resolve(users);
+			})
 			return defer.promise;
 		}
 
-		function signup (user) {
+		function subscribeUser(username) {
 			var defer = $q.defer();
-
-			$http.post('/user/createUser', user)
-				.success( function (res) {
-					defer.resolve(res.user);
-				});
-
+			io.socket.get('/subscribeToUser', {
+				username: username
+			},
+			function(res, jwres) {
+				defer.resolve(res);
+			});
 			return defer.promise;
 		}
 
-		function logout (username) {
+		function onMessage () {
 			var defer = $q.defer();
-			if (username) {
-				$http.post('/logout', username)
-					.success( function () {
-						defer.resolve();
-					});
-			}else{
-				defer.reject();
-			}
-
+			io.socket.on('user', function (event) {
+				defer.resolve(event);
+			});
 			return defer.promise;
 		}
 
+		function sendMessage (args) {
+			var defer = $q.defer();
+
+			io.socket.post('/sendMessage', args, function (res) {
+				defer.resolve(res);
+			});
+
+			return defer.promise;
+		}
+		
 		return {
-			login: login,
-			signup: signup,
-			logout: logout
+			getUsers : getUsers,
+			subscribeUser: subscribeUser,
+			sendMessage: sendMessage,
+			onMessage : onMessage
 		}
 		
 	}]);

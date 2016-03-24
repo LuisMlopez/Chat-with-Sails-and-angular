@@ -1,1 +1,13 @@
 <chat-navbar></chat-navbar>
+<div class="chat-body" ng-controller="chatController">
+	<div class="well bs-component">
+		<select multiple class="form-control" size="10">
+			<span class="online-{{user.online}}"><option ng-repeat="user in users" ng-click="initConversation(user)">{{user.name}}</option></span>
+		</select>
+
+		<div class="chat-window"><p ng-repeat="messageObj in messages track by messageObj.id"><b>{{messageObj.sender}}: </b>{{messageObj.message}}</p></div>
+		<input type="text" class="input-message" ng-model="message" ng-keypress="test($event)" ng-show="showInput"></input>
+	</div>
+		
+
+</div>

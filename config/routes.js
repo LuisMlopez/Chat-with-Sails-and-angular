@@ -40,6 +40,10 @@ module.exports.routes = {
     controller : 'UserController',
     action: 'newUser'
   },
+  'get /users' : {
+    controller: 'UserController',
+    action: 'getAll'
+  },
   'post /user/delteUser': 'UserController.deleteUser',
   'post /loginP': {
     controller: 'AuthController',
