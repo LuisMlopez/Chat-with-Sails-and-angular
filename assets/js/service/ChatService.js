@@ -1,42 +1,38 @@
 (function () {
 	angular.module('chatApp.services', [])
 
-	.factory('ChatService', ['$http', '$q', function($http, $q) {
+	.factory('ChatService', ['$http', '$q', '$sails', function($http, $q, $sails) {
 		
 		function getUsers() {			
 			var defer = $q.defer();
-
-			io.socket.get('/users', function (users) {
-				defer.resolve(users);
-			})
+			$sails.get('/users').then(function (res) {
+				defer.resolve(res.body);
+			}, function (resp){
+		        alert('Houston, we got a problem!');
+		    })
 			return defer.promise;
 		}
 
 		function subscribeUser(username) {
 			var defer = $q.defer();
-			io.socket.get('/subscribeToUser', {
+			$sails.get('/subscribeToUser', {
 				username: username
-			},
-			function(res, jwres) {
-				defer.resolve(res);
-			});
-			return defer.promise;
-		}
-
-		function onMessage () {
-			var defer = $q.defer();
-			io.socket.on('user', function (event) {
-				defer.resolve(event);
-			});
+			}).then(function (res, jwres) {
+				defer.resolve(res.body);
+			}, function (resp){
+		        alert('Houston, we got a problem!');
+		    });
 			return defer.promise;
 		}
 
 		function sendMessage (args) {
 			var defer = $q.defer();
 
-			io.socket.post('/sendMessage', args, function (res) {
-				defer.resolve(res);
-			});
+			$sails.post('/sendMessage', args).then(function (res) {
+				defer.resolve(res.body);
+			}, function (resp){
+		        alert('Houston, we got a problem!');
+		    });
 
 			return defer.promise;
 		}
@@ -44,8 +40,7 @@
 		return {
 			getUsers : getUsers,
 			subscribeUser: subscribeUser,
-			sendMessage: sendMessage,
-			onMessage : onMessage
+			sendMessage: sendMessage
 		}
 		
 	}]);

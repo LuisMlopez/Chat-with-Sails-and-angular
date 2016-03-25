@@ -1,7 +1,7 @@
 (function () {
 	angular.module('chatApp.controllers', [])
 
-	.controller('chatController', ['$scope', 'ChatService', 'SessionService', '$log', function ($scope, ChatService, SessionService, $log) {
+	.controller('chatController', ['$scope', '$sails', 'ChatService', 'SessionService', '$log', function ($scope, $sails, ChatService, SessionService, $log) {
 
 		$scope.users = [];
 		$scope.currentUser = SessionService.getCurrentUser();
@@ -11,9 +11,19 @@
 		$scope.showInput = false;
 		$scope.reciever = {};
 
+		var userEventIoHandler,
+			loginEventIoHandler,
+			logoutEventIoHandler;
+
+		$scope.$on('$destroy', function() {
+	      	$sails.off('user', userEventIoHandler);
+	      	$sails.off('login', loginEventIoHandler);
+	      	$sails.off('logout', logoutEventIoHandler);
+	    });
+
 
 		var bindSocketEvents = function () {
-			ChatService.onMessage().then(function (event) {
+			userEventIoHandler = $sails.on('user', function (event) {
 				debugger;
 				switch (event.verb) {
 					case 'messaged' : 
@@ -23,30 +33,29 @@
 						break;
 				}
 			});
-			io.socket.on('login', function(data) {
+			loginEventIoHandler = $sails.on('login', function(data) {
 				debugger;
 				getUsers();
 			});
 
-			io.socket.on('logout', function(data) {
+			logoutEventIoHandler = $sails.on('logout', function(data) {
 				debugger;
 				getUsers();
 			});
 		};
 
 		var subscribeUser = function () {
+			debugger;
 			ChatService.subscribeUser($scope.currentUser.username).then(function (res) {
 				$log.info('User: ' + res.user.name + ' has subscribed.');
 				bindSocketEvents();
 				getUsers();
 			});
-			
-
-			
 		};
 
 		var getUsers = function () {
 			ChatService.getUsers().then(function (users) {
+				debugger;
 				$scope.users = users.filter(function (user) {
 					return user.online && user.id !== $scope.currentUser.id;
 				})
