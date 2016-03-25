@@ -1,0 +1,38 @@
+{
+  "name": "chatProject",
+  "description": "First chat application with sails and angularjs",
+  "main": "app.js",
+  "authors": [
+    "luismorales"
+  ],
+  "dependencies": {
+    "angular-bootstrap": "~0.11.0",
+    "angular-moment": "~0.7.1",
+    "angular-route": "~1.2.17",
+    "angular": "1.2.19",
+    "angular-mocks": "~1.2.21",
+    "bootstrap": "~3.3.5",
+    "jquery": "^2.2.2",
+    "angular-sails": "^1.1.4"
+  },
+  "license": "MIT",
+  "keywords": [
+    "sails",
+    "chat",
+    "realtime",
+    "angular"
+  ],
+  "homepage": "https://github.com/LuisMlopez/Chat-with-Sails-and-angular",
+  "moduleType": [
+    "es6",
+    "globals",
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

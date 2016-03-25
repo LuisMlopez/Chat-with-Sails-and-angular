@@ -13,9 +13,9 @@ function addUser(user) {
 // Add multiple users to the users list.
 function updateUserList(users) {
   var select = $('#users-list').html('');
-  users.forEach(function(user) {
-    if (user.id !== window.currentUser.id && user.online) {
-      addUser(user);  
-    }    
-  });
+  // users.forEach(function(user) {
+  //   if (user.id !== window.currentUser.id && user.online) {
+  //     addUser(user);  
+  //   }    
+  // });
 }

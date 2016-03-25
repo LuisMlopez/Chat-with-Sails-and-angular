@@ -12,6 +12,9 @@
 
 module.exports = {
 
+	host: 'localhost',
+	port: '1337'
+
   /***************************************************************************
    * Set the default database connection for models in the development       *
    * environment (see config/connections.js and config/models.js )           *

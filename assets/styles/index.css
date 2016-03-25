@@ -5,3 +5,49 @@
 .invalid {
 	background-color: red;
 }
+
+.chat-body {
+	margin-top: 70px;
+}
+
+.online-true {
+	color: green;
+}
+
+.online-false {
+	color: red;
+}
+
+.form-control {
+	width: 15%;
+}
+
+option.ng-binding.ng-scope {
+	font-size: 18px;
+}
+
+#input-username-true {
+	border-color: red;
+}
+
+#input-username-false {
+	border-color: green;
+}
+
+.chat-window {
+  position: absolute;
+  border-style: solid;
+  height: 25%;
+  width: 80%;
+  right: 15px;
+  top: 90px;
+  background-color: white;
+  overflow: auto;
+}
+
+.input-message {
+	position: absolute;
+	width: 80%;
+  right: 15px;
+  top: 260px;
+}

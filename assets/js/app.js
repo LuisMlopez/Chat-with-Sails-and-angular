@@ -1,71 +1,58 @@
-$(document).ready(function (){
+(function () {
+	var chatApp = angular.module('chatApp', [
+		'ngRoute',
+		'ngSails',
+		'chatApp.controllers',
+		'chatApp.directives',
+		'chatApp.services'
+	]);
 
-	io.socket.on('connect', function socketConnected () {
-		console.log('connected with sockets!!!----------');
+	chatApp.config(['$routeProvider', function ($routeProvider) {
 
-		//Login
-		$('button#loginButton').on('click', function (event) {
-			url = '/login';
-			$(location).attr('href', url);
+		$routeProvider
+		.when('/chat', {
+			templateUrl : '/templates/chat.html',
+			resolve: {
+				loginRequired: loginRequired
+			}
+		})
+		.when('/', {
+			templateUrl: '/templates/index.html',
+			resolve: {
+				check: sessionOnProgress
+			}
+		})
+		.otherwise({
+			redirectTo : '/',
+			caseInsensitiveMatch: true
 		});
+		
+	}]);
 
-		//signup
-		$('button#signupButton').on('click', function (event) {
-			$('section#chooseSection').hide();
-			$('section#signinSection').show();
+	var loginRequired = function ($q, $rootScope, $location) {
+		var defer = $q.defer();
+		if (!$rootScope.currentUser){
+			$location.path('/').replace();
+		}
+		defer.resolve();
+		return defer.promise;
+	}
+
+	var sessionOnProgress = function ($q, $rootScope, $location) {
+		var defer = $q.defer();
+		if ($rootScope.currentUser){
+			$location.path('/chat').replace();
+		}
+		defer.resolve();
+		return defer.promise;
+	}
+
+	chatApp.run(['$rootScope', 'SessionService', function ($rootScope, SessionService) {
+		Object.defineProperty($rootScope, 'currentUser', {
+			get : function () {
+				return SessionService.getCurrentUser();
+			}
 		});
-
-		//logout
-		$('button#logoutButton').on('click', function (event) {
-			$.post('logout', {
-				username : window.currentUser.username
-			},
-			function (res) {
-				io.socket.get('/publishLogout', function (res, jwres) {
-					url = '/login';
-					$(location).attr('href', url);
-				});
-			});
-		});
-
-		//verify that the username is no already used
-		$('#username').on('focusout', function(ev) {
-			var input = this;
-			var username = input.value;
-			$.ajax('/user/find/' + username)
-				.done(function (res) {
-					if (!res.exits){
-						$(input).removeClass('invalid').addClass('valid');
-						//, $this.val().length === 0
-						$('.submit').prop('disabled', false);
-						input.setCustomValidity('');
-					}else{
-						$(input).removeClass('valid').addClass('invalid');
-						$('.submit').prop('disabled', true);
-						input.setCustomValidity('Username already used!');
-					}
-				})
-				.fail(function (err) {
-					console.log(err);
-				});
-		});
-		//Create new user
-		$('form#userForm').on('submit', function (event) {
-			event.preventDefault();
-			
-			$.post('/user/createUser', $( "#userForm" ).serialize(), function (res) {
-				window.currentUser = res.user;
-				io.socket.get('/publishLogin', function (res, jwres) {
-					//console.log('user ' + res.user.username + ' login');
-					url = '/chatView';
-					$(location).attr('href', url);
-				});
-				// url = '/chatView';
-				// $(location).attr('href', url);
-			});
-		});
-
-
-	});
-
-});
+	}]);
+	
+})();

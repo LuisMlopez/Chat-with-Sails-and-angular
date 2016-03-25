@@ -8,7 +8,11 @@ var passport = require('passport');
 
 module.exports = {
 
-
+	getAll : function (req, res) {
+		UserService.getAll(function (users) {
+			res.json(users);
+		});
+	},
 
 	searchUser : function (req, res) {
 		var username = req.params.username;
@@ -19,9 +23,9 @@ module.exports = {
 				return res.negotiate(err);
 			}
 			if (user === undefined){
-				res.json({exits: false});
+				res.json({exists: false});
 			}else{
-				res.json({exits: true});
+				res.json({exists: true});
 			}
 		});
 	},
