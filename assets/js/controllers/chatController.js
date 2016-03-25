@@ -5,7 +5,7 @@
 
 		$scope.users = [];
 		$scope.currentUser = SessionService.getCurrentUser();
-		$scope.messages = [{id:1, sender:'Cruyff', message:'RIP'}, {id:2, sender:'Camila', message:'Me voy de fiesta!'}];
+		$scope.messages = [];
 		$scope.message = '';
 		$scope.currentRoom = '';
 		$scope.showInput = false;
@@ -24,28 +24,25 @@
 
 		var bindSocketEvents = function () {
 			userEventIoHandler = $sails.on('user', function (event) {
-				debugger;
 				switch (event.verb) {
 					case 'messaged' : 
 						$log.info('msg--> '+event.data.message);
-						$scope.createRoom(event.data.from.id);
-						$scope.addMessage(event.data.from.name, event.data.message);
+
+						$scope.initConversation(event.data.from);
+						$scope.addMessage(event.data.from, event.data.message);
 						break;
 				}
 			});
 			loginEventIoHandler = $sails.on('login', function(data) {
-				debugger;
 				getUsers();
 			});
 
 			logoutEventIoHandler = $sails.on('logout', function(data) {
-				debugger;
 				getUsers();
 			});
 		};
 
 		var subscribeUser = function () {
-			debugger;
 			ChatService.subscribeUser($scope.currentUser.username).then(function (res) {
 				$log.info('User: ' + res.user.name + ' has subscribed.');
 				bindSocketEvents();
@@ -55,7 +52,6 @@
 
 		var getUsers = function () {
 			ChatService.getUsers().then(function (users) {
-				debugger;
 				$scope.users = users.filter(function (user) {
 					return user.online && user.id !== $scope.currentUser.id;
 				})
@@ -85,10 +81,13 @@
 		};
 
 		$scope.addMessage = function (sender, message) {
+			var messageAlign = 
+				(sender.id === $scope.currentUser.id || sender === 'me' ) ? 'right' : 'left';
 			$scope.messages.push({
 				id : (new Date()).getTime(),
-				sender: sender,
-				message: message
+				sender: sender.name || sender,
+				message: message,
+				align: messageAlign
 			});
 		};
 
