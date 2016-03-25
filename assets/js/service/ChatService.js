@@ -1,49 +1,46 @@
 (function () {
 	angular.module('chatApp.services', [])
 
-	.factory('ChatService', ['$http', '$q', function($http, $q) {
+	.factory('ChatService', ['$http', '$q', '$sails', function($http, $q, $sails) {
 		
-		function login (user) {
+		function getUsers() {			
 			var defer = $q.defer();
-
-			$http.post('/loginP', user)
-				.success(function (res) {
-					defer.resolve(res.user);
-				}).error(function (err){
-					defer.reject(err);
-				});
+			$sails.get('/users').then(function (res) {
+				defer.resolve(res.body);
+			}, function (resp){
+		        alert('Houston, we got a problem!');
+		    })
 			return defer.promise;
 		}
 
-		function signup (user) {
+		function subscribeUser(username) {
 			var defer = $q.defer();
-
-			$http.post('/user/createUser', user)
-				.success( function (res) {
-					defer.resolve(res.user);
-				});
-
+			$sails.get('/subscribeToUser', {
+				username: username
+			}).then(function (res, jwres) {
+				defer.resolve(res.body);
+			}, function (resp){
+		        alert('Houston, we got a problem!');
+		    });
 			return defer.promise;
 		}
 
-		function logout (username) {
+		function sendMessage (args) {
 			var defer = $q.defer();
-			if (username) {
-				$http.post('/logout', username)
-					.success( function () {
-						defer.resolve();
-					});
-			}else{
-				defer.reject();
-			}
+
+			$sails.post('/sendMessage', args).then(function (res) {
+				defer.resolve(res.body);
+			}, function (resp){
+		        alert('Houston, we got a problem!');
+		    });
 
 			return defer.promise;
 		}
-
+		
 		return {
-			login: login,
-			signup: signup,
-			logout: logout
+			getUsers : getUsers,
+			subscribeUser: subscribeUser,
+			sendMessage: sendMessage
 		}
 		
 	}]);

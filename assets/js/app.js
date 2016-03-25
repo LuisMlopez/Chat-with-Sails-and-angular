@@ -1,6 +1,7 @@
 (function () {
 	var chatApp = angular.module('chatApp', [
 		'ngRoute',
+		'ngSails',
 		'chatApp.controllers',
 		'chatApp.directives',
 		'chatApp.services'

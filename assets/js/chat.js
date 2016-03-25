@@ -81,17 +81,17 @@ $(document).ready(function () {
 		writeMessage(sender.id, window.currentUser.id, data.message);
 	}
 
-	io.socket.on('user', function reciveMessage (event) {
-		switch (event.verb) {
-			case 'messaged' : 
-				console.log('msg--> '+event.data.message);
-				receivePrivateMessage(event.data);
-				break;
-			case 'created' : 
-				console.log('crd--> '+event);
-				break;
-		}
-	});
+	// io.socket.on('user', function reciveMessage (event) {
+	// 	switch (event.verb) {
+	// 		case 'messaged' : 
+	// 			console.log('msg--> '+event.data.message);
+	// 			receivePrivateMessage(event.data);
+	// 			break;
+	// 		case 'created' : 
+	// 			console.log('crd--> '+event);
+	// 			break;
+	// 	}
+	// });
 
 	io.socket.on('login', function(data) {
 		io.socket.get('/user', updateUserList);
